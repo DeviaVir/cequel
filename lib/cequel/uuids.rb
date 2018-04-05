@@ -34,13 +34,13 @@ module Cequel
     # @return [Boolean] true if the object is recognized by Cequel as a UUID
     #
     def uuid?(object)
-      object.is_a?(Cassandra::Uuid)
+      object.is_a?(Dse::Uuid)
     end
 
     private
 
     def timeuuid_generator
-      @timeuuid_generator ||= Cassandra::TimeUuid::Generator.new
+      @timeuuid_generator ||= Dse::TimeUuid::Generator.new
     end
   end
 end

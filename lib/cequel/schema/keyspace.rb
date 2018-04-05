@@ -90,7 +90,7 @@ module Cequel
       def drop!
         keyspace.execute("DROP KEYSPACE #{keyspace.name}").tap do
 
-          # If you execute a DROP KEYSPACE statement on a Cassandra::Session
+          # If you execute a DROP KEYSPACE statement on a Dse::Session
           # with keyspace set to the one being dropped, then it will set
           # its keyspace to nil after the statement finishes. E.g.
           #   session.keyspace # => "cequel_test"

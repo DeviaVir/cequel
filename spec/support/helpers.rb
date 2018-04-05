@@ -106,11 +106,11 @@ module Cequel
       end
 
       def min_uuid(time = Time.now)
-        Cassandra::TimeUuid::Generator.new(0, 0).at(time, 0)
+        Dse::TimeUuid::Generator.new(0, 0).at(time, 0)
       end
 
       def max_uuid(time = Time.now)
-        Cassandra::TimeUuid::Generator.new(0x3fff, 0xffffffffffff).
+        Dse::TimeUuid::Generator.new(0x3fff, 0xffffffffffff).
           at(time, 999)
       end
 

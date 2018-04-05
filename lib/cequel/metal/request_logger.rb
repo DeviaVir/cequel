@@ -56,7 +56,7 @@ module Cequel
             statement
           when Statement
             sanitize(statement.cql, limit_value_length(statement.bind_vars))
-          when Cassandra::Statements::Batch
+          when Dse::Statements::Batch
             batch_stmt = "BEGIN #{'UNLOGGED ' if statement.type == :unlogged}BATCH"
             statement.statements.each { |s| batch_stmt << "\n" << sanitize(s.cql, limit_value_length(s.params)) }
             batch_stmt << "END BATCH"

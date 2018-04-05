@@ -46,7 +46,7 @@ describe Cequel::Metal::Keyspace do
     end
 
     it 'should execute unlogged batch if specified' do
-      expect_query_with_consistency(instance_of(Cassandra::Statements::Batch::Unlogged), anything) do
+      expect_query_with_consistency(instance_of(Dse::Statements::Batch::Unlogged), anything) do
         cequel.batch(unlogged: true) do
           cequel[:posts].insert(id: 1, title: 'One')
           cequel[:posts].insert(id: 2, title: 'Two')
@@ -55,7 +55,7 @@ describe Cequel::Metal::Keyspace do
     end
 
     it 'should execute batch with given consistency' do
-      expect_query_with_consistency(instance_of(Cassandra::Statements::Batch::Logged), :one) do
+      expect_query_with_consistency(instance_of(Dse::Statements::Batch::Logged), :one) do
         cequel.batch(consistency: :one) do
           cequel[:posts].insert(id: 1, title: 'One')
           cequel[:posts].insert(id: 2, title: 'Two')
@@ -88,14 +88,14 @@ describe Cequel::Metal::Keyspace do
 
   describe "#drop_table", cql: "~> 3.1" do
     it "allows IF EXISTS" do
-      expect { cequel.schema.drop_table(:unknown) }.to raise_error(Cassandra::Errors::InvalidError)
+      expect { cequel.schema.drop_table(:unknown) }.to raise_error(Dse::Errors::InvalidError)
       expect { cequel.schema.drop_table(:unknown, exists: true) }.not_to raise_error
     end
   end
 
   describe "#drop_materialized_view", cql: "~> 3.4" do
     it "allows IF EXISTS" do
-      expect { cequel.schema.drop_materialized_view(:unknown) }.to raise_error(Cassandra::Errors::ConfigurationError)
+      expect { cequel.schema.drop_materialized_view(:unknown) }.to raise_error(Dse::Errors::ConfigurationError)
       expect { cequel.schema.drop_materialized_view(:unknown, exists: true) }.not_to raise_error
     end
   end
@@ -226,7 +226,7 @@ describe Cequel::Metal::Keyspace do
 
   describe "#execute" do
     let(:statement) { "SELECT id FROM posts" }
-    let(:execution_error) { Cassandra::Errors::OverloadedError.new(1,2,3,4,5,6,7,8,9) }
+    let(:execution_error) { Dse::Errors::OverloadedError.new(1,2,3,4,5,6,7,8,9) }
 
     context "without a connection error" do
       it "executes a CQL query" do
@@ -240,7 +240,7 @@ describe Cequel::Metal::Keyspace do
           .to receive(:execute)
                .with(->(s){ s.cql == statement},
                      hash_including(:consistency => cequel.default_consistency))
-          .and_raise(Cassandra::Errors::NoHostsAvailable)
+          .and_raise(Dse::Errors::NoHostsAvailable)
           .once
 
         expect { cequel.execute(statement) }.not_to raise_error
@@ -262,7 +262,7 @@ describe Cequel::Metal::Keyspace do
           .to receive(:execute)
                .with(->(s){ s.cql == statement},
                      hash_including(:consistency => cequel.default_consistency))
-          .and_raise(Cassandra::Errors::TimeoutError)
+          .and_raise(Dse::Errors::TimeoutError)
           .once
 
         expect { cequel.execute(statement) }.not_to raise_error
@@ -272,7 +272,7 @@ describe Cequel::Metal::Keyspace do
 
   describe "#prepare_statement" do
     let(:statement) { "SELECT id FROM posts" }
-    let(:execution_error) { Cassandra::Errors::OverloadedError.new(1,2,3,4,5,6,7,8,9) }
+    let(:execution_error) { Dse::Errors::OverloadedError.new(1,2,3,4,5,6,7,8,9) }
 
     context "without a connection error" do
       it "executes a CQL query" do
@@ -285,7 +285,7 @@ describe Cequel::Metal::Keyspace do
         allow(cequel.client)
           .to receive(:prepare)
                .with(->(s){ s == statement})
-          .and_raise(Cassandra::Errors::NoHostsAvailable)
+          .and_raise(Dse::Errors::NoHostsAvailable)
           .once
 
         expect { cequel.prepare_statement(statement) }.not_to raise_error
