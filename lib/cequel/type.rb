@@ -90,7 +90,7 @@ module Cequel
         quote(value.utc.to_time)
       when Date
         quote(Time.gm(value.year, value.month, value.day))
-      when Numeric, true, false, Dse::Uuid
+      when Numeric, true, false, Cassandra::Uuid
         value.to_s
       else
         quote_string(value.to_s)
@@ -415,11 +415,11 @@ module Cequel
       end
 
       def cast(value)
-        if value.is_a? Dse::Uuid then value
+        if value.is_a? Cassandra::Uuid then value
         elsif defined?(SimpleUUID::UUID) && value.is_a?(SimpleUUID::UUID)
-          Dse::Uuid.new(value.to_i)
+          Cassandra::Uuid.new(value.to_i)
         elsif value.is_a?(::Integer) || value.is_a?(::String)
-          Dse::Uuid.new(value)
+          Cassandra::Uuid.new(value)
         else
           fail ArgumentError,
                "Don't know how to cast #{value.inspect} to a UUID"
@@ -440,7 +440,7 @@ module Cequel
     #
     class Timeuuid < Uuid
       def cast(value)
-        Dse::TimeUuid.new(super.value)
+        Cassandra::TimeUuid.new(super.value)
       end
 
       def internal_names

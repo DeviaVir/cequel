@@ -225,7 +225,7 @@ module Cequel
       # Wraps the prepare statement in the default retry strategy
       #
       # @param statement [String,Statement] statement to prepare
-      # @return [Dse::Statement::Prepared] the prepared statement
+      # @return [Cassandra::Statement::Prepared] the prepared statement
       #
       def prepare_statement(statement)
         cql = case statement

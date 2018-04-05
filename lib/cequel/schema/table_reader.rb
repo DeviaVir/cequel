@@ -53,7 +53,7 @@ module Cequel
       def initialize(table_data)
         @table_data = table_data
         @table = Table.new(table_data.name,
-                           Dse::MaterializedView === table_data)
+                           Cassandra::MaterializedView === table_data)
       end
 
       #
@@ -115,13 +115,13 @@ module Cequel
 
       def interpret_column(c)
         case c.type
-        when Dse::Types::Simple
+        when Cassandra::Types::Simple
           DataColumn.new(c.name.to_sym, type(c.type), index_name(c))
-        when Dse::Types::List
+        when Cassandra::Types::List
           List.new(c.name.to_sym, type(c.type.value_type))
-        when Dse::Types::Set
+        when Cassandra::Types::Set
           Set.new(c.name.to_sym, type(c.type.value_type))
-        when Dse::Types::Map
+        when Cassandra::Types::Map
           Map.new(c.name.to_sym, type(c.type.key_type), type(c.type.value_type))
         else
           fail "Unsupported type #{c.type.inspect}"
