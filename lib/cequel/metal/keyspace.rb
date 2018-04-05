@@ -210,7 +210,7 @@ module Cequel
                         when Statement
                           [prepare_statement(statement),
                            {arguments: statement.bind_vars}.merge(options)]
-                        when Dse::Statements::Batch
+                        when Cassandra::Statements::Batch
                           [statement, options]
                         end
 

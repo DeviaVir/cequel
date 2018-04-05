@@ -14,7 +14,7 @@ module Cequel
 
       def initialize(cql_or_prepared='', bind_vars=[])
         cql, prepared = *case cql_or_prepared
-                         when Dse::Statements::Prepared
+                         when Cassandra::Statements::Prepared
                            [cql_or_prepared.cql, cql_or_prepared]
                          else
                            [cql_or_prepared.to_s, nil]
@@ -31,7 +31,7 @@ module Cequel
       end
       alias_method :cql, :to_s
 
-      # @return [Dse::Statements::Prepared] prepared version of this statement
+      # @return [Cassandra::Statements::Prepared] prepared version of this statement
       def prepare(keyspace)
         @prepared ||= keyspace.client.prepare(cql)
       end

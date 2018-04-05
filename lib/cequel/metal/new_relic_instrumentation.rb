@@ -23,7 +23,7 @@ module Cequel
           statement_txt = statement.cql
           statement_words = statement_txt.split
           operation = statement_words.first.downcase
-        elsif statement.is_a?(::Dse::Statements::Batch)
+        elsif statement.is_a?(::Cassandra::Statements::Batch)
           operation = "batch"
           statement_txt = 'BEGIN BATCH'
         end
