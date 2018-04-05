@@ -45,9 +45,9 @@ module Cequel
             retries_remaining = max_retries
             begin
               yield
-            rescue Dse::Errors::NoHostsAvailable,
-                  Dse::Errors::ExecutionError,
-                  Dse::Errors::TimeoutError => error
+            rescue Cassandra::Errors::NoHostsAvailable,
+                  Cassandra::Errors::ExecutionError,
+                  Cassandra::Errors::TimeoutError => error
               raise error if retries_remaining == 0
               sleep(retry_delay)
               keyspace.clear_active_connections! if clear_before_retry

@@ -148,10 +148,10 @@ describe Cequel::Record::Persistence do
 
         it 'should not mark itself as clean if save failed at Cassandra level' do
           blog.name = 'Pizza'
-          with_client_error(Dse::Errors::InvalidError.new(nil, nil, nil, nil, nil, nil, nil, nil, nil)) do
+          with_client_error(Cassandra::Errors::InvalidError.new(nil, nil, nil, nil, nil, nil, nil, nil, nil)) do
             begin
               blog.save
-            rescue Dse::Errors::InvalidError
+            rescue Cassandra::Errors::InvalidError
             end
           end
           blog.save
